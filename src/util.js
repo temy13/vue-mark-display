@@ -39,9 +39,18 @@ export const getHash = () => {
 // auto font size
 export const defaultFontSize = 14;
 
-export const parseFontSize = () =>
-  parseInt(Math.sqrt((window.innerWidth * window.innerHeight) / 240), 10);
-
+export const parseFontSize = (isFull = true) => {
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  // var eid = 'mark-display-kai'
+  var eid = "review";
+  var e = document.getElementById(eid);
+  if (!isFull && e) {
+    w = e.clientWidth;
+    h = e.clientHeight;
+  }
+  return parseInt(Math.sqrt((w * h) / 240), 10);
+};
 // mixins
 export const mixinInjected = {
   props: { slides: Array, current: Number },

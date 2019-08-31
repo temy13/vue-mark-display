@@ -10,6 +10,7 @@
       :key="index"
       v-show="computedCurrentPage === index + 1"
       class="slide"
+      :id="'slide-' + index"
     >
       <div
         class="slide-content"

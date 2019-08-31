@@ -1,5 +1,6 @@
 <template>
   <div
+    id="mark-display-kai"
     class="mark-display stage"
     :class="[`type-${currentType}`, `theme-${theme || 'default'}`]"
     :style="[`font-size: ${fontSize}px`, currentBg].join('; ')"
@@ -52,7 +53,8 @@ export default {
     autoBlankTarget: { type: Boolean, default: false },
     keyboardCtrl: { type: Boolean, default: false },
     urlHashCtrl: { type: Boolean, default: false },
-    supportPreview: { type: Boolean, default: false }
+    supportPreview: { type: Boolean, default: false },
+    isFull: { type: Boolean, default: true }
   },
   data() {
     const { markdown, src, page, autoFontSize, urlHashCtrl } = this;
@@ -69,7 +71,7 @@ export default {
     return {
       raw: markdown,
       currentPage: page || (urlHashCtrl ? parseInt(getHash(), 10) || 1 : 1),
-      fontSize: autoFontSize ? parseFontSize() : defaultFontSize
+      fontSize: autoFontSize ? parseFontSize(this.isFull) : defaultFontSize
     };
   },
   provide() {
@@ -184,6 +186,7 @@ export default {
   computed: {
     slides() {
       const { raw } = this;
+      console.log(raw);
       return raw ? parseMarkdown(raw) : genLoadingSlide();
     },
     title() {
@@ -214,6 +217,11 @@ export default {
     this.initBaseElement();
     this.visit(currentPage);
   },
+  mounted() {
+    this.fontSize = this.autoFontSize
+      ? parseFontSize(this.isFull)
+      : defaultFontSize;
+  },
   watch: {
     title() {
       const { title } = this;
@@ -231,6 +239,9 @@ export default {
       }
       this.visit(to);
       this.$emit("change", { from, to });
+    },
+    markdown() {
+      this.raw = this.markdown;
     }
   }
 };
