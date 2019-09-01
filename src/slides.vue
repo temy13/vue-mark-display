@@ -17,15 +17,20 @@
         :style="slide.meta.slideStyle"
         v-html="slide.html"
       ></div>
+      <PackChart />
     </div>
   </transition-group>
 </template>
 
 <script>
 import { mixinInjected } from "./util";
+import PackChart from "./horizontalAxisChart.vue";
 
 export default {
   mixins: [mixinInjected],
+  components: {
+    PackChart
+  },
   methods: {
     catchPreview(event) {
       const {

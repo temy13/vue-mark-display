@@ -990,10 +990,7 @@
         "<pre><code>" + (escaped ? code : escape(code, true)) + "</code></pre>"
       );
     }
-    if (lang === "horizontalAxis") {
-      console.log('<div class="' + lang + '">' + code + "</div>");
-      return '<div class="' + lang + '">' + code + "</div>";
-    }
+
     return (
       '<pre><code class="' +
       this.options.langPrefix +
@@ -1310,8 +1307,7 @@
         while (this.next().type !== "list_end") {
           body += this.tok();
         }
-        console.log("liststatr");
-        console.log(body);
+
         return this.renderer.list(body, ordered, start);
       }
       case "list_item_start": {

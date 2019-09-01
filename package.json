@@ -52,6 +52,9 @@
     }
   },
   "dependencies": {
-    "marked": "^0.6.1"
+    "d3": "^5.11.0",
+    "d3-scale": "^3.0.1",
+    "marked": "^0.6.1",
+    "typescript": "^3.6.2"
   }
 }
