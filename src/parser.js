@@ -8,6 +8,8 @@ marked.setOptions({
 export const parse = code => {
   const tokens = marked.lexer(code);
   const slides = splitTokens(tokens);
+  console.log("slides");
+  console.log(slides);
   return slides;
 };
 
@@ -19,6 +21,8 @@ function splitTokens(tokens) {
       resolveSlide(current);
       slides.push(current);
       current = createSlide();
+    } else if (token.type === "code") {
+      codeParse(current, token);
     } else {
       if (token.type === "html") {
         const kvPair = token.text.match(
@@ -45,9 +49,17 @@ function splitTokens(tokens) {
   return slides;
 }
 
+function codeParse(current, token) {
+  if (token.lang === "horizontalAxis") {
+    var _tokens = marked.lexer(token.text);
+    const html = marked.parser(_tokens);
+    token.text = html;
+  }
+  current.tokens.push(token);
+}
+
 function resolveSlide(slide) {
   const { meta, tokens } = slide;
-
   // style
   const {
     background,
@@ -83,7 +95,6 @@ function resolveSlide(slide) {
     // title
     if (!meta.title) meta.title = firstToken.text;
   }
-
   const html = marked.parser(tokens);
   slide.html = html;
 }

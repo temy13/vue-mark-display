@@ -186,7 +186,6 @@ export default {
   computed: {
     slides() {
       const { raw } = this;
-      console.log(raw);
       return raw ? parseMarkdown(raw) : genLoadingSlide();
     },
     title() {
