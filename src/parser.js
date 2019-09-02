@@ -8,8 +8,6 @@ marked.setOptions({
 export const parse = code => {
   const tokens = marked.lexer(code);
   const slides = splitTokens(tokens);
-  console.log("slides");
-  console.log(slides);
   return slides;
 };
 
@@ -50,11 +48,11 @@ function splitTokens(tokens) {
 }
 
 function codeParse(current, token) {
-  if (token.lang === "horizontalAxis") {
-    var _tokens = marked.lexer(token.text);
-    const html = marked.parser(_tokens);
-    token.text = html;
-  }
+  // if (token.lang === "horizontalAxis") {
+  //   var _tokens = marked.lexer(token.text);
+  // const html = marked.parser(_tokens);
+  // token.text = html;
+  // }
   current.tokens.push(token);
 }
 

@@ -12,24 +12,19 @@
       class="slide"
       :id="'slide-' + index"
     >
-      <div
-        class="slide-content"
-        :style="slide.meta.slideStyle"
-        v-html="slide.html"
-      ></div>
-      <PackChart />
+      <SlideContent :_style="slide.meta.slideStyle" :_html="slide.html" />
     </div>
   </transition-group>
 </template>
 
 <script>
 import { mixinInjected } from "./util";
-import PackChart from "./horizontalAxisChart.vue";
+import SlideContent from "./slideContent.vue";
 
 export default {
   mixins: [mixinInjected],
   components: {
-    PackChart
+    SlideContent
   },
   methods: {
     catchPreview(event) {

@@ -984,7 +984,9 @@
         code = out;
       }
     }
-
+    if (lang === "horizontalAxis") {
+      return "<div class='graph " + lang + "'></div>";
+    }
     if (!lang) {
       return (
         "<pre><code>" + (escaped ? code : escape(code, true)) + "</code></pre>"
