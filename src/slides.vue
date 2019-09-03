@@ -10,9 +10,14 @@
       :key="index"
       v-show="computedCurrentPage === index + 1"
       class="slide"
-      :id="'slide-' + index"
+      :id="uuid + '-slide-' + index"
     >
-      <SlideContent :_style="slide.meta.slideStyle" :_html="slide.html" />
+      <SlideContent
+        :_id="uuid + '-slide-' + index"
+        :_style="slide.meta.slideStyle"
+        :_html="slide.html"
+        :current="current"
+      />
     </div>
   </transition-group>
 </template>
@@ -22,6 +27,7 @@ import { mixinInjected } from "./util";
 import SlideContent from "./slideContent.vue";
 
 export default {
+  props: { uuid: String },
   mixins: [mixinInjected],
   components: {
     SlideContent

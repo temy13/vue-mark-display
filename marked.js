@@ -985,7 +985,9 @@
       }
     }
     if (lang === "horizontalAxis") {
-      return "<div class='graph " + lang + "'></div>";
+      return (
+        "<div class='graph " + lang + "' data-content='" + code + "'></div>"
+      );
     }
     if (!lang) {
       return (

@@ -1,12 +1,12 @@
 <template>
   <div
-    id="mark-display-kai"
+    :id="'mark-display-' + uuid"
     class="mark-display stage"
     :class="[`type-${currentType}`, `theme-${theme || 'default'}`]"
     :style="[`font-size: ${fontSize}px`, currentBg].join('; ')"
   >
-    <m-slides @preview="preview" :current="currentPage"></m-slides>
-    <m-ctrl @change="change" :current="currentPage"></m-ctrl>
+    <m-slides @preview="preview" :current="currentPage" :uuid="uuid"></m-slides>
+    <m-ctrl @change="change" :current="currentPage" :uuid="uuid"></m-ctrl>
     <m-preview ref="preview"></m-preview>
   </div>
 </template>
@@ -71,7 +71,11 @@ export default {
     return {
       raw: markdown,
       currentPage: page || (urlHashCtrl ? parseInt(getHash(), 10) || 1 : 1),
-      fontSize: autoFontSize ? parseFontSize(this.isFull) : defaultFontSize
+      fontSize: autoFontSize ? parseFontSize(this.isFull) : defaultFontSize,
+      uuid: Math.random()
+        .toString(36)
+        .replace(/[^a-z]+/g, "")
+        .substr(0, 8)
     };
   },
   provide() {
@@ -111,9 +115,11 @@ export default {
     },
     // shortcuts
     goNext() {
+      console.log(this.uuid, this.currentPage);
       this.goto(this.currentPage + 1);
     },
     goPrev() {
+      console.log(this.uuid, this.currentPage);
       this.goto(this.currentPage - 1);
     },
     goFirst() {

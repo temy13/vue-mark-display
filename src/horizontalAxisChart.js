@@ -1,10 +1,15 @@
 import Vue from "vue";
 import * as d3 from "d3";
 
-export const horizontalAxisChart = (width, height, data, fontSize = 10) => {
-  var margin = { top: 30, bottom: 60, right: 30, left: 60 };
-  // 2. SVG領域の設定
+export const horizontalAxisChart = (
+  width,
+  height,
+  data,
+  _id,
+  fontSize = 10
+) => {
   var svg = d3
+    .select("#" + _id)
     .select(".horizontalAxis")
     .append("svg")
     .attr("width", width)
@@ -20,12 +25,12 @@ export const horizontalAxisChart = (width, height, data, fontSize = 10) => {
     });
   svg
     .append("path") // パスを追加
-    .attr("d", line([[0, width / 2], [width, width / 2]])) // 配列の座標を渡してpath要素のd属性に設定
+    .attr("d", line([[0, height / 2], [width, height / 2]])) // 配列の座標を渡してpath要素のd属性に設定
     .attr("stroke", "black") // 線の色を黒にする
     .attr("fill", "none");
 
   // first
-  var p = width / 2 + fontSize * 2;
+  var p = height / 2 + fontSize * 2;
   svg
     .append("text")
     .attr("x", 0)
@@ -56,7 +61,7 @@ export const horizontalAxisChart = (width, height, data, fontSize = 10) => {
     .text(data[data.length - 1]);
 
   var w = width / (data.length - 2);
-  p = width / 2 - fontSize * 2;
+  p = height / 2 - fontSize * 2;
   var bboxwidth = 0;
   var ty = 0;
   var tx = 0;
@@ -65,7 +70,7 @@ export const horizontalAxisChart = (width, height, data, fontSize = 10) => {
       .append("text")
       .attr("x", w * i)
       .attr("y", p)
-      .attr("font-size", fontSize + "pt")
+      .attr("font-size", fontSize * 1.5 + "pt")
       .attr("width", w)
       .attr("height", fontSize * 2)
       .text(data[i + 1])
@@ -74,7 +79,7 @@ export const horizontalAxisChart = (width, height, data, fontSize = 10) => {
         bboxwidth = bbox.width;
       });
     if (ty === 0 && w < bboxwidth) {
-      ty = fontSize * 1.5;
+      ty = fontSize * 2.0;
     } else if (w < bboxwidth) {
       ty = 0;
     }
