@@ -39,13 +39,13 @@ export default {
   },
   mixins: [
     genMixinGlobalEvents("keydown", keydownHandler),
-    genMixinGlobalEvents("resize", resizeHandler),
-    genMixinGlobalEvents("hashchange", hashHandler)
+    genMixinGlobalEvents("resize", resizeHandler)
+    //genMixinGlobalEvents("hashchange", hashHandler)
   ],
   props: {
     markdown: { type: String },
     src: { type: String },
-    page: { type: Number },
+    page: { type: Number, default: 1 },
     baseUrl: { type: String },
     theme: { type: String },
     autoFontSize: { type: Boolean, default: false },
@@ -70,7 +70,7 @@ export default {
     }
     return {
       raw: markdown,
-      currentPage: page || (urlHashCtrl ? parseInt(getHash(), 10) || 1 : 1),
+      currentPage: page || (urlHashCtrl ? parseInt(getHash(page), 10) || 1 : 1),
       fontSize: autoFontSize ? parseFontSize(this.isFull) : defaultFontSize,
       uuid: Math.random()
         .toString(36)
@@ -115,11 +115,9 @@ export default {
     },
     // shortcuts
     goNext() {
-      console.log(this.uuid, this.currentPage);
       this.goto(this.currentPage + 1);
     },
     goPrev() {
-      console.log(this.uuid, this.currentPage);
       this.goto(this.currentPage - 1);
     },
     goFirst() {

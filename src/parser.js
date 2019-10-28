@@ -1,26 +1,54 @@
 import marked from "marked";
 import { highlight } from "./highlight";
 
+var specificCodes = [
+  "horizontalAxis",
+  "icon",
+  "circleInCircle",
+  "networkGraph",
+  "networkSquare",
+  "list",
+  "render",
+  "barGraph",
+  "step",
+  "background",
+  "imageTiles",
+  "graphChart"
+];
+
 marked.setOptions({
-  highlight
+  highlight,
+  specificCodes
 });
+
+var thema = `
+
+<!-- style: font-weight: bold -->
+
+\`\`\`background
+opacity: 0
+color: lightBlue.lighten5
+zIndex: -1000
+\`\`\`
+
+`;
 
 export const parse = code => {
   const tokens = marked.lexer(code);
-  const slides = splitTokens(tokens);
+  const themaToken = marked.lexer(thema);
+  const slides = splitTokens(tokens, themaToken);
   return slides;
 };
 
-function splitTokens(tokens) {
+function splitTokens(tokens, themaTokens) {
   const slides = [];
-  let current = createSlide();
+  let current = createSlide(themaTokens);
   tokens.forEach(token => {
+    // console.log(token.type)
     if (token.type === "hr") {
       resolveSlide(current);
       slides.push(current);
-      current = createSlide();
-    } else if (token.type === "code") {
-      codeParse(current, token);
+      current = createSlide(themaTokens);
     } else {
       if (token.type === "html") {
         const kvPair = token.text.match(
@@ -45,15 +73,6 @@ function splitTokens(tokens) {
     slides.push(current);
   }
   return slides;
-}
-
-function codeParse(current, token) {
-  // if (token.lang === "horizontalAxis") {
-  //   var _tokens = marked.lexer(token.text);
-  // const html = marked.parser(_tokens);
-  // token.text = html;
-  // }
-  current.tokens.push(token);
 }
 
 function resolveSlide(slide) {
@@ -97,9 +116,12 @@ function resolveSlide(slide) {
   slide.html = html;
 }
 
-function createSlide() {
+function createSlide(themaTokens) {
   const slide = { meta: {}, tokens: [], html: "" };
   slide.tokens.links = {};
+  themaTokens.forEach(token => {
+    slide.tokens.push(token);
+  });
   return slide;
 }
 

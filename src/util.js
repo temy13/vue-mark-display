@@ -31,8 +31,9 @@ export const setHash = page => {
   location.replace(url.href);
 };
 
-export const getHash = () => {
+export const getHash = page => {
   const matched = location.hash.match(/^\#(\d+)$/);
+  console.log("getHash", matched, page);
   return matched ? matched[1] : "";
 };
 
@@ -87,6 +88,8 @@ export const genMixinGlobalEvents = (type, handler, host = window) => {
 // event handlers
 export const keydownHandler = function(event) {
   const vm = this;
+  console.log(vm);
+  console.log(event);
   if (!vm.keyboardCtrl) {
     return;
   }

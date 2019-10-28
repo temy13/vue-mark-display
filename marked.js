@@ -2,6 +2,7 @@
  * marked - a markdown parser
  * Copyright (c) 2011-2018, Christopher Jeffrey. (MIT Licensed)
  * https://github.com/markedjs/marked
+ * modifyed takigawa(temy13) ver 1.0
  */
 
 (function(root) {
@@ -977,6 +978,17 @@
 
   Renderer.prototype.code = function(code, infostring, escaped) {
     var lang = (infostring || "").match(/\S*/)[0];
+
+    if (this.options.specificCodes.includes(lang)) {
+      return (
+        '<div class="specific-codes ' +
+        lang +
+        '" data-content="' +
+        code +
+        '"></div>'
+      );
+    }
+
     if (this.options.highlight) {
       var out = this.options.highlight(code, lang);
       if (out != null && out !== code) {
@@ -984,11 +996,7 @@
         code = out;
       }
     }
-    if (lang === "horizontalAxis") {
-      return (
-        "<div class='graph " + lang + "' data-content='" + code + "'></div>"
-      );
-    }
+
     if (!lang) {
       return (
         "<pre><code>" + (escaped ? code : escape(code, true)) + "</code></pre>"
@@ -996,7 +1004,7 @@
     }
 
     return (
-      '<pre><code class="' +
+      '<pre><code class="prettyprint  ' +
       this.options.langPrefix +
       escape(lang, true) +
       '">' +
@@ -1733,7 +1741,8 @@
       smartLists: false,
       smartypants: false,
       tables: true,
-      xhtml: false
+      xhtml: false,
+      specificCodes: []
     };
   };
 
